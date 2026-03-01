@@ -1,0 +1,39 @@
+`timescale 1ns/1ps
+
+module ALU_tb;
+
+reg [3:0] A, B;
+reg [2:0] op;
+wire [3:0] result;
+wire carry;
+
+ALU uut (
+    .A(A),
+    .B(B),
+    .op(op),
+    .result(result),
+    .carry(carry)
+);
+
+initial begin
+    $dumpfile("alu.vcd");
+    $dumpvars(0, ALU_tb);
+
+    A = 4'b0110;  // 6
+    B = 4'b0010;  // 2
+
+    op = 3'b000; #10; // ADD
+    op = 3'b001; #10; // SUB
+    op = 3'b010; #10; // AND
+    op = 3'b011; #10; // OR
+    op = 3'b100; #10; // NOT
+
+    $finish;
+end
+
+initial begin
+    $monitor("Time=%0t A=%b B=%b OP=%b Result=%b Carry=%b",
+             $time, A, B, op, result, carry);
+end
+
+endmodule
